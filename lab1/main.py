@@ -62,7 +62,7 @@ def color_static():
     
     for x in range(width):
         for y in range(height):
-            r.point(x,y, r.ccolor(
+            r.point(x,y, r.color(
                 random.randint(0,255),
                 random.randint(0,255),
                 random.randint(0,255)
