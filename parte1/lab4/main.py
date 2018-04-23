@@ -9,12 +9,12 @@ def single_point():
 
 def single_line():
     r = Render(800,600)
-    r.line((15,32),(589,50))
+    r.line((15,32),(589,50),(0,0,0))
     r.display('out.bmp')
 
 def face():
     r = Render(800,600)
-    r.load('./models/face.obj',(9,2),(40,40))
+    r.load('./models/face.obj',(25, 5, 0), (15, 15, 15))
     r.display()
     r.display('out.bmp')
 
@@ -38,7 +38,7 @@ def grass():
 
 def hand():
     r = Render(800,600)
-    r.load('./models/hand.obj',(9,2),(70,70))
+    r.load('./models/hand.obj',(25, 25, 0), (10, 10, 10))
     r.display()
     r.display('out.bmp')
 
