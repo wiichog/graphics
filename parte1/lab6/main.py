@@ -48,6 +48,12 @@ def girl():
     r.display()
     r.display('out.bmp')
 
+def figures():
+    r = Render(800,600)
+    r.load('./models/figures.obj',(0, 0.5, 1), (100, 100, 100))
+    r.display()
+    r.display('out.bmp')
+
 if __name__ == "__main__":
     example = sys.argv[1] if len(sys.argv) > 1 else ""
     if example == "face":
@@ -62,3 +68,5 @@ if __name__ == "__main__":
         hand()
     elif example == "girl":
         girl()
+    elif example == "figures":
+        figures()

@@ -182,8 +182,7 @@ class Render(object):
                 w,v,u = barycentric(A,B,C,V2(x,y))
                 if w<0 or v<0 or u<0:
                     continue 
-                z = A.z * w +  B.z *v + C.z * u 
-
+                z = A.z * w +  B.z *v + C.z * u
                 if(z>self.zbuffer[x][y]):
                     self.point(x,y,color)
                     self.zbuffer[x][y] = z
