@@ -1,7 +1,7 @@
 import struct
 import random
-import numpy
-from obj import Obj
+import numpy as np
+from obj import Obj, Texture
 from collections import namedtuple
 
 # ===============================================================
@@ -154,22 +154,23 @@ class Render(object):
             pass
 
     def triangle(self, A, B, C, color=None, texture_coords=(), varying_normals=()):
-        bbox_min, bbox_max = bbox(A,B,C)
-        for x in range(bbox_min.x,bbox_max.x +1):
-            for y in range(bbox_min.y,bbox_max.y+1):
-                w,v,u = barycentric(A,B,C,V2(x,y))
-                if w<0 or v<0 or u<0:
-                    continue 
+        bbox_min, bbox_max = bbox(A, B, C)
+        for x in range(bbox_min.x, bbox_max.x + 1):
+            for y in range(bbox_min.y, bbox_max.y + 1):
+                w, v, u = barycentric(A, B, C, V2(x, y))
+                if w < 0 or v < 0 or u < 0:  # 0 is actually a valid value! (it is on the edge)
+                    continue
+                print(self.shader)
                 color = self.shader(self,
-                triangle=(A, B, C),
-                bar=(w, v, u),
-                varying_normals=varying_normals,
-                texture_coords=texture_coords
-                )
+                    triangle=(A, B, C),
+                    bar=(w, v, u),
+                    varying_normals=varying_normals,
+                    texture_coords=texture_coords)
+
                 z = A.z * w + B.z * v + C.z * u
 
-                if x< len(self.zbuffer) and y < len(self.zbuffer[x]) and z > self.zbuffer[x][y]:
-                    self.point(x,y,color)
+                if x < len(self.zbuffer) and y < len(self.zbuffer[x]) and z > self.zbuffer[x][y]:
+                    self.point(x, y, color)
                     self.zbuffer[x][y] = z
 
     def transform(self,vertex,translate=(0,0,0),scale=(1,1,1)):

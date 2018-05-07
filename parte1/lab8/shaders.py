@@ -11,8 +11,8 @@ def gourad(render,bar,**kwargs):
 
     iA, iB, iC = [ dot(n,render.light) for n in kwargs['varying_normals']]
     intensity = w*iA + v*iB + u*iC
-    return bytes(map(lambda b: round(b*intensity) if b*intensity > else , color))
-,
+    return bytes(map(lambda b: round(b*intensity) if b*intensity > 0 else 0, color))
+
 r = Render(800,600)
 t = Texture('./models/normal.bmp')
 r.load('./models/model.obj',(1,1,1),(300,300,300),

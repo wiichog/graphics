@@ -24,15 +24,15 @@ class Obj(object):
     def read(self):
         for line in self.lines:
             if line:
-                prefix,value = line.split(' ',1)
-                if prefix=='v':
-                    self.vertices.append(list(map(float,value.split(' '))))
-                if prefix=='vt':
-                    self.tvertices.append(list(map(float, value.split(' '))))
-                if prefix=='vn':
-                    self.normals.append(list(map(float,value.split(' '))))
-                elif prefix =="f":
-                    self.faces.append([list(map(try_int,face.split('/'))) for face in value.split(' ')])
+                prefix, value = line.split(' ', 1)
+                if prefix == 'v':
+                    self.vertices.append(list(map(float, value.split(' '))))
+                elif prefix == 'vt':
+                    self.tvertices.append(list(map(float, value.split(' '))))                    
+                elif prefix == 'vn':
+                    self.normals.append(list(map(float, value.split(' '))))                    
+                elif prefix == 'f':
+                    self.faces.append([list(map(try_int, face.split('/'))) for face in value.split(' ')])
 
 class Texture(object):
     def __init__(self,path):
@@ -52,7 +52,7 @@ class Texture(object):
         image.seek(header_size)
         for y in range(self.height):
             self.pixels.append([])
-            for x in range(self.width):
+            for _ in range(self.width):
                 b = ord(image.read(1))
                 g = ord(image.read(1))
                 r = ord(image.read(1))
