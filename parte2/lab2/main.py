@@ -8,7 +8,7 @@ import OpenGL.GL.shaders as shaders
 
 pygame.init()
 WHITE = (255,255,255)
-render = pygame.display.set_mode((800,600), pygame.OPENGL)
+render = pygame.display.set_mode((800,600), pygame.OPENGL | pygame.DOUBLEBUF)
 
 vertex_shader = """
 #version 330
@@ -69,3 +69,5 @@ while not done:
         if event.type == pygame.KEYUP and event.key == pygame.K_ESCAPE:
             done = True
     pass
+
+    pygame.display.flip()
