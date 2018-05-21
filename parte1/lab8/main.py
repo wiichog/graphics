@@ -4,18 +4,12 @@ from render import Render
 from obj import Texture
 
 def model():
-    """
-    Draws a cube at an angle so it is more interesting
-    """
     r = Render(800, 600)
     t = Texture('./models/model.bmp')
     r.load('./models/model.obj', (1, 1, 1), (300, 300, 300), texture=t)
     r.display('out.bmp')
 
 def face():
-    """
-    Draws a cute face, now 30% less creepy!
-    """
     r = Render(800, 600)
     r.load('./face.obj', (25, 5, 0), (15, 15, 15))
     r.display('out.bmp')

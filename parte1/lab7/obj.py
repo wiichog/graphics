@@ -29,8 +29,8 @@ class Obj(object):
                     prefix = ''
                 if prefix=='v':
                     self.vertices.append(list(map(float,value.split(' '))))
-                if prefix=='t':
-                    self.tvertices.append([list(map(try_int, face.split('/'))) for face in value.split(' ')])    
+                if prefix=='vt':
+                    self.tvertices.append(list(map(float, value.split(' '))))   
                 elif prefix =="f":
                     self.vfaces.append([list(map(try_int,face.split('/'))) for face in value.split(' ')])
 

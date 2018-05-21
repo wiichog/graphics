@@ -160,7 +160,6 @@ class Render(object):
                 w, v, u = barycentric(A, B, C, V2(x, y))
                 if w < 0 or v < 0 or u < 0:  # 0 is actually a valid value! (it is on the edge)
                     continue
-                print(self.shader)
                 color = self.shader(self,
                     triangle=(A, B, C),
                     bar=(w, v, u),

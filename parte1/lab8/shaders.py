@@ -14,7 +14,7 @@ def gourad(render,bar,**kwargs):
     return bytes(map(lambda b: round(b*intensity) if b*intensity > 0 else 0, color))
 
 r = Render(800,600)
-t = Texture('./models/normal.bmp')
+t = Texture('./models/model.bmp')
 r.load('./models/model.obj',(1,1,1),(300,300,300),
 texture=t, shader=gourad)
 r.display('out.bmp')

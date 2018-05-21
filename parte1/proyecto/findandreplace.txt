@@ -1,0 +1,2 @@
+\nvt find
+ 0.0\nvt replace
