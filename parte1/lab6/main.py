@@ -38,7 +38,7 @@ def grass():
 
 def hand():
     r = Render(800,600)
-    r.load('./models/hand.obj',(25, 25, 0), (10, 10, 10))
+    r.load('./models/hand.obj',(50, 50, 0), (10, 10, 10))
     r.display()
     r.display('out.bmp')
 
@@ -51,6 +51,12 @@ def girl():
 def figures():
     r = Render(800,600)
     r.load('./models/figures.obj',(0, 0.5, 1), (100, 100, 100))
+    r.display()
+    r.display('out.bmp')
+
+def car():
+    r = Render(800,600)
+    r.load('./models/car.obj',(55, 55, 0), (5, 5, 5))
     r.display()
     r.display('out.bmp')
 
@@ -70,3 +76,5 @@ if __name__ == "__main__":
         girl()
     elif example == "figures":
         figures()
+    elif example == "car":
+        car()

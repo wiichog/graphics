@@ -1,6 +1,7 @@
 import sys
 import random
 from render import Render
+import cProfile
 
 def single_point():
     r = Render(800,600)
@@ -53,4 +54,5 @@ if __name__ == "__main__":
     elif example == "grass":
         grass()
     elif example == "hand":
-        hand()
+        cProfile.run('hand()')
+        

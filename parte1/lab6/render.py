@@ -183,9 +183,12 @@ class Render(object):
                 if w<0 or v<0 or u<0:
                     continue 
                 z = A.z * w +  B.z *v + C.z * u
-                if(z>self.zbuffer[x][y]):
-                    self.point(x,y,color)
-                    self.zbuffer[x][y] = z
+                try:
+                    if(z>self.zbuffer[x][y]):
+                        self.point(x,y,color)
+                        self.zbuffer[x][y] = z
+                except:
+                    pass
 
     def transform(self,vertex,translate=(0,0,0),scale=(1,1,1)):
         return V3(
