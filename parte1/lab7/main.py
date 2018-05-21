@@ -21,6 +21,12 @@ def earth():
     r.load('./models/earth.obj', (800, 600, 0), (0.5, 0.5, 1), texture=t)
     r.display('out.bmp')
 
+def car():
+    r = Render(800, 600)
+    t = Texture('./models/car.bmp')
+    r.load('./models/car.obj', (60, 20, 1), (5, 5, 5), texture=t)
+    r.display('out.bmp')
+
 if __name__ == "__main__":
     example = sys.argv[1] if len(sys.argv) > 1 else ""
 
@@ -30,6 +36,8 @@ if __name__ == "__main__":
         face()
     elif example == "earth":
         earth()
+    elif example == "car":
+        car()
     else:
         print("Usage: python3 examples.py <example>")
         print("\nExample can be one of:\n")
