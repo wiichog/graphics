@@ -16,7 +16,7 @@ def gourad(render,bar,texture_coords,varying_normals,triangle ):
         intensity =1 
     return bytes(map(lambda b: round(b*intensity) if b*intensity > 0 else 0, color))
 
-r = Render(800,600)
+r = Render(800,800)
 
 r.viewport(np.matrix([
         [10, 0, 0, 500],
