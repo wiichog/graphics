@@ -17,7 +17,7 @@ def gourad(render,bar,texture_coords,varying_normals,triangle ):
     return bytes(map(lambda b: round(b*intensity) if b*intensity > 0 else 0, color))
 
 r = Render(800,600)
-'''
+
 r.viewport(np.matrix([
         [10, 0, 0, 500],
         [0, 10, 0, 5],
@@ -61,12 +61,12 @@ t = Texture('./models/box.bmp')
 r.light = V3(0,0,1)
 r.lookAt(V3(1,1,1),V3(0,0,0),V3(0,1,0))
 r.load('./models/box.obj',texture=t,shader=gourad)
-'''
+
 
 r.viewport(np.matrix([
-        [5, 0, 0, 200],
-        [0, 5, 0, 200],
-        [0, 0, 5, 0],
+        [1, 0, 0, 100],
+        [0, 1, 0, 400],
+        [0, 0, 1, 0],
         [0, 0, 0, 1]
         ]))
 t = Texture('./models/car.bmp')
