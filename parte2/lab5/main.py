@@ -5,8 +5,8 @@ import glm
 import pyassimp
 import numpy
 
-pygme.init()
-pygame.display.set_mode((3000,2000), pygame.Ope | pygame.DOUBLEBUF)
+pygame.init()
+pygame.display.set_mode((3000,2000), pygame.OPENGL | pygame.DOUBLEBUF)
 clock = pygame.time.Clock()
 pygame.key.set_repeat(1,10)
 
@@ -17,15 +17,18 @@ glEnable(GL_TEXTURE_2D)
 vertex_shader = """ 
 #version 330
 layout(location = 0) in vec4 position;
-layout(location = 1) in vec4 color;
-layout(location = 2) in vec4 textCoord;
+layout(location = 1) in vec4 normal;
+layout(location = 2) in vec2 texcoords;
 
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
+uniform vec4 color;
+uniform vec4 light;
+
 out vec4 vertexColor;
-out vec2 vertexTextCoord;
+out vec2 vertexTexcoords;
 
 void main(){
     float intensity = dot(normal,normalize(light - position));
@@ -41,19 +44,19 @@ fragment_shader = """
 layout(location = 0) out vec4 diffuseColor;
 
 in vec4 vertexColor;
-in vec2 vertexTextCoord;
+in vec2 vertexTexcoord;
 
 uniform sampler2D tex;
 
 void main(){
-    diffuseColor = vertexColor * texture(text,vertexTextCoord) * mix(texture(texture1,vertexTextCoord),texture(texture2,vertexTextCoord),0.9)
-}
+    diffuseColor = vertexColor * texture(tex,vertexTexcoord);
+    }
 """
 
 shader = shaders.compileProgram(
     shaders.compileShader(vertex_shader,GL_VERTEX_SHADER),
     shaders.compileShader(fragment_shader,GL_FRAGMENT_SHADER),
-    )
+)
 
 glUseProgram(shader)
 
