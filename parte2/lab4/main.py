@@ -13,49 +13,54 @@ clock = pygame.time.Clock()
 
 # #2 inicializar shaders
 
-vertex_shader = """ 
+vertex_shader = """
 #version 330
-layout(location = 0) in vec4 position;
-layout(location = 1) in vec4 color;
-layout(location = 2) in vec4 textCoord;
+layout (location = 0) in vec4 position;
+layout (location = 1) in vec4 normal;
+layout (location = 2) in vec2 texcoords;
 
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
+uniform vec4 color;
+uniform vec4 light;
+
 out vec4 vertexColor;
-out vec2 vertexTextCoord;
+out vec2 vertexTexcoords;
 
 void main(){
-    gl_Position = projection * view * model * position;
-    vertexColor = color;
-    vertexTextCoord = textCoord;
-}
 
+    float intensity = dot(normal, normalize(light - position));
+    gl_Position = projection * view * model * position;
+    vertexColor = color * intensity;
+    vertexTexcoords = texcoords;
+
+}
 """
 
 fragment_shader = """
 #version 330
 
-layout(location = 0) out vec4 diffuseColor;
+layout (location = 0) out vec4 diffuseColor;
 
 in vec4 vertexColor;
-in vec2 vertexTextCoord;
+in vec2 vertexTexcoords;
 
-uniform sampler2D texture1;
-uniform sampler2D texture2;
+uniform sampler2D tex;
 
 void main(){
-    diffuseColor = vertexColor * texture(texture1,vertexTextCoord) * mix(texture(texture1,vertexTextCoord),texture(texture2,vertexTextCoord),0.9)
+
+    diffuseColor = vertexColor * texture(tex, vertexTexcoords);
 
 }
 """
 
-# #3 vertex Data
 shader = shaders.compileProgram(
     shaders.compileShader(vertex_shader,GL_VERTEX_SHADER),
     shaders.compileShader(fragment_shader,GL_FRAGMENT_SHADER),
     )
+
 
 vertex_data = vertices.data 
 vertex_buffer_object = glGenVertexArrays(1)

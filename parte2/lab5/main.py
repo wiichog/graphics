@@ -6,7 +6,7 @@ import pyassimp
 import numpy
 
 pygame.init()
-pygame.display.set_mode((3000,2000), pygame.OPENGL | pygame.DOUBLEBUF)
+pygame.display.set_mode((800,600), pygame.OPENGL | pygame.DOUBLEBUF)
 clock = pygame.time.Clock()
 pygame.key.set_repeat(1,10)
 
@@ -14,11 +14,11 @@ glClearColor(0.18,0.18,0.18,1.0)
 glEnable(GL_DEPTH_TEST)
 glEnable(GL_TEXTURE_2D)
 
-vertex_shader = """ 
+vertex_shader = """
 #version 330
-layout(location = 0) in vec4 position;
-layout(location = 1) in vec4 normal;
-layout(location = 2) in vec2 texcoords;
+layout (location = 0) in vec4 position;
+layout (location = 1) in vec4 normal;
+layout (location = 2) in vec2 texcoords;
 
 uniform mat4 model;
 uniform mat4 view;
@@ -31,49 +31,53 @@ out vec4 vertexColor;
 out vec2 vertexTexcoords;
 
 void main(){
-    float intensity = dot(normal,normalize(light - position));
+
+    float intensity = dot(normal, normalize(light - position));
     gl_Position = projection * view * model * position;
     vertexColor = color * intensity;
     vertexTexcoords = texcoords;
+
 }
 """
 
 fragment_shader = """
 #version 330
 
-layout(location = 0) out vec4 diffuseColor;
+layout (location = 0) out vec4 diffuseColor;
 
 in vec4 vertexColor;
-in vec2 vertexTexcoord;
+in vec2 vertexTexcoords;
 
 uniform sampler2D tex;
 
 void main(){
-    diffuseColor = vertexColor * texture(tex,vertexTexcoord);
-    }
+
+    diffuseColor = vertexColor * texture(tex, vertexTexcoords);
+
+}
 """
 
 shader = shaders.compileProgram(
     shaders.compileShader(vertex_shader,GL_VERTEX_SHADER),
     shaders.compileShader(fragment_shader,GL_FRAGMENT_SHADER),
-)
+    )
+
 
 glUseProgram(shader)
 
 model = glm.mat4(1)
 view = glm.mat4(1)
 
-projection = glm.perspective(glm.radians(45),3000/2000,0.1,1000.0)
-scene = pyassimp.load('./models/OBJ/spider.obj')
+projection = glm.perspective(glm.radians(45),800/600,0.1,1000.0)
+scene = pyassimp.load('./models/fox.obj')
 
 def glize(node):
     model = node.transformation.astype(numpy.float32)
-
+    model = glm.translate(glm.mat4(model.tolist()),glm.vec3(0,-50,0))
     for mesh in node.meshes:
-        material = dict(mash.material.properties.items())
+        material = dict(mesh.material.properties.items())
         texture = material['file'][2:]
-
-        texture_surface = pygame.image.load('./models/OBJ/'+texture)
+        texture_surface = pygame.image.load('./models/'+texture)
         texture_Data = pygame.image.tostring(texture_surface,"RGB",1)
         width = texture_surface.get_width()
         height = texture_surface.get_height()
@@ -107,7 +111,7 @@ def glize(node):
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, faces.nbytes, faces, GL_STATIC_DRAW)
 
         glUniformMatrix4fv(
-            glGetUniformLocation(shader, "model") ,1, GL_FALSE, model
+            glGetUniformLocation(shader, "model") ,1, GL_FALSE, glm.value_ptr(model)
         )
 
         glUniformMatrix4fv(
@@ -118,7 +122,7 @@ def glize(node):
             glGetUniformLocation(shader, "projection") ,1, GL_FALSE, glm.value_ptr(projection)
         )
 
-        diffuse = mesh.material.properties["difuse"]
+        diffuse = mesh.material.properties["diffuse"]
 
         glUniform4f(
             glGetUniformLocation(shader, "color"), *diffuse,1
