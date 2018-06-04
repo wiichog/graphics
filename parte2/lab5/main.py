@@ -67,16 +67,19 @@ glUseProgram(shader)
 
 model = glm.mat4(1)
 view = glm.mat4(1)
-
 projection = glm.perspective(glm.radians(45),800/600,0.1,1000.0)
-scene = pyassimp.load('./models/fox.obj')
 
-def glize(node):
+
+
+
+def glize(node,x,y,z):
     model = node.transformation.astype(numpy.float32)
-    model = glm.translate(glm.mat4(model.tolist()),glm.vec3(0,-50,0))
+    model = glm.translate(glm.mat4(model.tolist()),glm.vec3(x,y,z))
     for mesh in node.meshes:
+        
         material = dict(mesh.material.properties.items())
-        texture = material['file'][2:]
+        print(material)
+        texture = material['file']#[2:]
         texture_surface = pygame.image.load('./models/'+texture)
         texture_Data = pygame.image.tostring(texture_surface,"RGB",1)
         width = texture_surface.get_width()
@@ -135,7 +138,7 @@ def glize(node):
         glDrawElements(GL_TRIANGLES, len(faces), GL_UNSIGNED_INT, None)
     
     for child in node.children:
-        glize(child)
+        glize(child,x,y,z)
 
 camera = glm.vec3(0,0,200)
 camera_speed = 50
@@ -149,16 +152,21 @@ def process_input():
         if event.type == pygame.KEYDOWN:
             if event.type == pygame.K_LEFT:
                 camera.x += camera_speed
-                camera.z += camera_speed
+                #camera.z += camera_speed
             if event.key == pygame.K_RIGHT:
                 camera.x -= camera_speed
-                camera.z -= camera_speed
+                #camera.z -= camera_speed
+            if event.key == pygame.K_UP:
+                camera.y += camera_speed
+            if event.key == pygame.K_DOWN:
+                camera.y -= camera_speed
 
 done = False
 while not done:
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
     view = glm.lookAt(camera, glm.vec3(0,0,0), glm.vec3(0,1,0))
-    glize(scene.rootnode)
+    scene = pyassimp.load('./models/escena.obj')
+    glize(scene.rootnode,0,0,100)
 
     done = process_input()
     clock.tick(15)
